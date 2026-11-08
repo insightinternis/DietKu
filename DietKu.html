@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DietKu: Hidup sehat, satu angka sehari</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F2F6EC;--card:#FFFFFF;--ink:#1B2A21;--mut:#5A6A5F;--acc:#2D6A4F;--accink:#FFFFFF;--warm:#C9760F;--line:#D3DDC8;--bad:#B03A2B;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101913;--card:#18241C;--ink:#E5EEE2;--mut:#98AA9D;--acc:#7CC79B;--accink:#0E1A12;--warm:#F0A94B;--line:#2A3B2F;--bad:#EE8A7A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#101913;--card:#18241C;--ink:#E5EEE2;--mut:#98AA9D;--acc:#7CC79B;--accink:#0E1A12;--warm:#F0A94B;--line:#2A3B2F;--bad:#EE8A7A;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "DM Sans",system-ui,sans-serif}
+main{max-width:640px;margin:0 auto;padding:20px 16px 48px}
+h1,h2,.big{font-family:"Cormorant Garamond",Georgia,serif;font-weight:700;letter-spacing:-.01em}
+h1{font-size:2.3rem;line-height:1.05;margin:8px 0 6px}
+h2{font-size:1.5rem;margin:0 0 10px}
+p{margin:0 0 10px}.mut{color:var(--mut);font-size:.92rem}
+nav{display:flex;gap:6px;margin:18px 0;overflow-x:auto}
+nav button{flex:1;white-space:nowrap;padding:10px 12px;border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;font:inherit;font-weight:500;cursor:pointer}
+nav button[aria-selected="true"]{background:var(--acc);color:var(--accink);border-color:var(--acc)}
+section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+section[hidden]{display:none}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{display:block;font-size:.88rem;color:var(--mut);margin-bottom:10px}
+input,select,textarea{display:block;width:100%;margin-top:4px;padding:11px 12px;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px}
+:focus-visible{outline:3px solid var(--warm);outline-offset:2px}
+.btn{width:100%;padding:13px;border:0;border-radius:12px;background:var(--acc);color:var(--accink);font:inherit;font-weight:700;cursor:pointer;margin-top:4px}
+.btn.alt{background:transparent;color:var(--acc);border:1px solid var(--acc)}
+.big{font-size:3.6rem;line-height:1}
+.scale{position:relative;height:12px;border-radius:99px;margin:18px 0 6px;background:linear-gradient(90deg,#6FA8DC 0 17.5%,#7BBF8E 17.5% 39%,#E8C547 39% 49%,#E39A3B 49% 74%,#C95B45 74%)}
+.scale i{position:absolute;top:-5px;width:4px;height:22px;background:var(--ink);border-radius:2px;transform:translateX(-2px)}
+.out{margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+.stats div{background:var(--bg);border-radius:12px;padding:10px}
+.stats b{display:block;font-family:"Cormorant Garamond",serif;font-size:1.6rem;line-height:1.1}
+.warn{border-left:4px solid var(--bad);padding:6px 10px;color:var(--bad);margin:10px 0}
+.bar{height:14px;background:var(--bg);border-radius:99px;overflow:hidden;margin:8px 0}
+.bar span{display:block;height:100%;background:var(--acc);width:0;transition:width .3s}
+.bar.over span{background:var(--bad)}
+ul.log{list-style:none;padding:0;margin:12px 0}
+ul.log li{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}
+ul.log li.mh{background:var(--bg);border-radius:8px;padding:6px 10px;margin-top:8px}
+ul.log button{border:0;background:none;color:var(--bad);font:inherit;cursor:pointer;padding:4px 8px}
+details{border-top:1px solid var(--line);padding:10px 0}
+summary{font-weight:700;cursor:pointer}
+details ul{margin:8px 0 0;padding-left:20px}
+footer{margin-top:20px}
+#qa h3{font-family:"Cormorant Garamond",Georgia,serif;font-size:1.3rem;margin:16px 0 2px}
+#qa details p{margin:8px 0 0}
+textarea{resize:vertical}
+.seg{display:flex;gap:6px;margin:10px 0}
+.seg button{flex:1;padding:8px;border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;font:inherit;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--acc);color:var(--accink);border-color:var(--acc)}
+@media(prefers-reduced-motion:reduce){.bar span{transition:none}}
+</style>
+</head>
+<body>
+<main>
+<h1>DietKu</h1>
+<p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.35rem;margin:0 0 10px"><i>Hidup sehat, satu angka sehari</i></p>
+<p class="mut">Hitung BMI dan kebutuhan kalori, catat makanan hari ini, lalu bandingkan dengan targetmu.</p>
+<p><b>Supervisi dr. Puguh Widagdo, SpPD-FINASIM</b></p>
+<p class="mut" id="hi"></p>
+<div class="seg" role="group" aria-label="Tampilan"><button data-th="auto">Otomatis</button><button data-th="light">Terang</button><button data-th="dark">Gelap</button></div>
+<div id="pwa" style="margin:12px 0"><button class="btn" id="pwab">Pasang aplikasi di HP</button><p class="mut" id="pwat" hidden></p></div>
+
+<nav role="tablist" aria-label="Menu">
+<button role="tab" data-t="hitung">Hitung</button>
+<button role="tab" data-t="catat">Catat makan</button>
+<button role="tab" data-t="pantau">Pantau</button>
+<button role="tab" data-t="riwayat">Riwayat</button>
+<button role="tab" data-t="masakan">Masakan rumah</button>
+<button role="tab" data-t="panduan">Panduan</button>
+<button role="tab" data-t="tanya">Tanya AI</button>
+</nav>
+
+<section id="hitung">
+<h2>BMI dan target kalori</h2>
+<label>Nama pengguna<input id="nm" type="text" maxlength="40" placeholder="Nama kamu"></label>
+<div class="row">
+<label>Jenis kelamin<select id="sex"><option value="m">Pria</option><option value="f">Wanita</option></select></label>
+<label>Usia (tahun)<input id="age" type="number" min="15" max="100" inputmode="numeric"></label>
+<label>Berat (kg)<input id="w" type="text" inputmode="decimal"></label>
+<label>Tinggi (cm)<input id="h" type="text" inputmode="decimal"></label>
+</div>
+<label>Aktivitas<select id="act">
+<option value="1.2">Jarang bergerak atau olahraga</option>
+<option value="1.375">Olahraga ringan 1–3 hari/minggu</option>
+<option value="1.55">Olahraga sedang 3–5 hari/minggu</option>
+<option value="1.725">Olahraga berat 6–7 hari/minggu</option>
+<option value="1.9">Kerja fisik berat dan olahraga rutin</option>
+</select></label>
+<label>Defisit kalori harian<select id="def">
+<option value="0">Tidak ada (menjaga berat)</option>
+<option value="300">300 kkal</option>
+<option value="400" selected>400 kkal</option>
+<option value="500">500 kkal</option>
+</select></label>
+<p class="mut">Angka desimal boleh memakai koma atau titik.</p>
+<button class="btn" id="go">Hitung</button>
+<div id="hasil" class="out" hidden></div>
+<button class="btn alt" id="reset" style="margin-top:16px">Mulai pengguna baru (hapus semua data)</button>
+</section>
+
+<section id="catat" hidden>
+<h2>Catatan makan</h2>
+<label>Tanggal catatan<input id="cd" type="date"></label>
+<p class="mut" id="cdn"></p>
+<div id="prog"></div>
+<label>Waktu makan<select id="mt"><option>Sarapan</option><option>Makan siang</option><option>Makan malam</option><option>Camilan</option></select></label>
+<label>Makanan<select id="food"></select></label>
+<label>Jumlah porsi<input id="qty" type="text" inputmode="decimal"></label>
+<button class="btn" id="add">Tambah ke catatan</button>
+<details><summary>Makanan tidak ada di daftar</summary>
+<div class="row" style="margin-top:10px">
+<label>Nama<input id="cn" type="text" placeholder="Nasi uduk"></label>
+<label>Kalori (kkal)<input id="ck" type="text" inputmode="decimal"></label>
+<label>Protein (g, opsional)<input id="cp" type="text" inputmode="decimal"></label>
+</div>
+<button class="btn alt" id="addc">Tambah makanan sendiri</button>
+</details>
+<ul class="log" id="log"></ul>
+<button class="btn alt" id="clr">Kosongkan catatan tanggal ini</button>
+<p class="mut" style="margin-top:12px">Nilai kalori adalah perkiraan rata-rata per porsi. Untuk hasil lebih akurat, timbang makanan dan baca label gizi.</p>
+</section>
+
+<section id="pantau" hidden>
+<h2>Air minum</h2>
+<label>Tanggal catatan<input id="pd" type="date"></label>
+<p class="mut" id="pdn"></p>
+<label>Kelompok usia<select id="wg"><option value="a">Dewasa (30–35 ml/kg)</option><option value="e">Lansia, 60 tahun ke atas (25–30 ml/kg)</option></select></label>
+<label>Ukuran 1 gelas<select id="gs"><option value="150">Gelas kecil atau cangkir, 150 ml</option><option value="200">Gelas sedang, 200 ml</option><option value="250" selected>Gelas standar, 250 ml</option><option value="300">Gelas besar, 300 ml</option><option value="500">Botol kecil, 500 ml</option></select></label>
+<div id="wprog"></div>
+<div class="row"><button class="btn" id="wp">Tambah 1 gelas</button><button class="btn alt" id="wm">Kurangi 1 gelas</button></div>
+<div class="out"><h2>Riwayat berat badan</h2>
+<div class="row"><label>Berat (kg)<input id="bw" type="text" inputmode="decimal"></label><label>Tanggal<input id="bd" type="date"></label></div>
+<p class="mut">Berat terbaru di sini otomatis dipakai di tab Hitung dan untuk menghitung kebutuhan air minum.</p>
+<button class="btn" id="bs">Simpan berat</button>
+<div id="bh"></div></div>
+</section>
+
+<section id="riwayat" hidden>
+<h2>Rekap riwayat</h2>
+<p class="mut" id="rwho"></p>
+<div id="rsum"></div>
+<div id="rchart"></div>
+<div id="rlist"></div>
+</section>
+
+<section id="masakan" hidden>
+<h2>Kalori masakan rumahan</h2>
+<p class="mut">Timbang semua bahan mentah (termasuk minyak, santan, gula), jumlahkan kalorinya, lalu isi di sini.</p>
+<details open><summary>Cara menghitung total kalori bahan</summary>
+<ol class="mut"><li>Timbang tiap bahan mentah dalam gram, termasuk minyak, santan, dan gula.</li><li>Pilih bahan. Kalori per 100 g terisi otomatis dan bisa diubah, atau isi dari label gizi kemasan.</li><li>Kalori bahan = berat ÷ 100 × kkal per 100 g. Total semua bahan terisi otomatis di kolom di bawah.</li></ol>
+<div class="row"><label>Bahan<select id="ig"></select></label><label>Kkal per 100 g<input id="ik" type="text" inputmode="decimal"></label></div>
+<label>Berat (g)<input id="iw" type="text" inputmode="decimal"></label>
+<button class="btn alt" id="iadd">Tambah bahan</button>
+<ul class="log" id="il"></ul>
+<p><b id="it"></b></p>
+<p class="mut">1 sendok makan minyak sekitar 13 g. Nilai per 100 g adalah perkiraan rata-rata.</p></details>
+<label>Total kalori semua bahan (kkal)<input id="rk" type="text" inputmode="decimal"></label>
+<label>Berat seluruh masakan matang (g)<input id="rw" type="text" inputmode="decimal"></label>
+<div class="row">
+<label>Berat porsimu (g)<input id="rp" type="text" inputmode="decimal"></label>
+<label>Atau dibagi rata, jumlah porsi<input id="rn" type="number" min="1" inputmode="numeric"></label>
+</div>
+<button class="btn" id="rgo">Hitung porsi</button>
+<div id="rout" class="out" hidden></div>
+</section>
+
+<section id="panduan" hidden>
+<h2>Panduan makan sehat</h2>
+<details open><summary>Isi piringmu</summary><ul>
+<li>Protein cukup: telur, ikan, ayam tanpa kulit, tahu, tempe, kacang-kacangan.</li>
+<li>Karbohidrat kompleks dan serat: nasi merah, oat, kentang, sayur, buah.</li>
+<li>Lemak sehat dalam jumlah terbatas; kurangi gorengan dan santan berlebih.</li>
+<li>Air putih sesuai berat badan; lihat tab Pantau untuk jumlah ml dan gelasnya.</li></ul></details>
+<details><summary>Batas harian garam, gula, lemak</summary><ul>
+<li>Garam: sekitar 1 sendok teh.</li><li>Gula: sekitar 4 sendok makan.</li><li>Lemak: sekitar 5 sendok makan.</li>
+<li>Batasi minuman manis, jajanan olahan, dan porsi besar.</li></ul></details>
+<details><summary>Cara mencatat kalori</summary><ul>
+<li>Catat segera setelah makan, termasuk kopi, teh manis, saus, dan camilan.</li>
+<li>Ukur dengan gram bila bisa. Cek takaran saji dan jumlah saji per kemasan pada label.</li>
+<li>Tanpa timbangan: telapak tangan untuk protein, kepalan untuk karbohidrat, ibu jari untuk lemak.</li>
+<li>Pantau 2–4 minggu, lalu sesuaikan porsi. Satu hari yang melebihi target bukan kegagalan.</li></ul></details>
+<details><summary>Gaya hidup pendukung</summary><ul>
+<li>Aktivitas aerobik sekitar 20–30 menit, 5–7 kali seminggu.</li>
+<li>Tidur cukup dan kelola stres.</li>
+<li>Target penurunan sehat: 5–15% berat awal dalam setahun, secara bertahap.</li></ul></details>
+<details><summary>Pasang di layar utama ponsel</summary><ul>
+<li>iPhone (Safari): ketuk Bagikan, lalu Tambah ke Layar Utama.</li>
+<li>Android (Chrome): ketuk menu titik tiga, lalu Tambahkan ke layar utama.</li></ul></details>
+<details><summary>Kapan perlu bertemu dokter atau ahli gizi</summary><ul>
+<li>Diabetes, hipertensi, gangguan ginjal, kehamilan, atau riwayat gangguan makan.</li>
+<li>Berat badan turun sangat cepat.</li></ul></details>
+</section>
+
+<section id="tanya" hidden>
+<h2>Tanya AI seputar diet</h2>
+<p class="mut">Ketuk pertanyaan untuk melihat jawabannya. Jawaban bersifat edukasi umum dan bukan pengganti konsultasi dokter.</p>
+<div id="qa"></div>
+<div id="askbox" class="out" hidden>
+<h2 style="font-size:1.3rem">Pertanyaan lain</h2>
+<label>Tulis pertanyaanmu<textarea id="aq" rows="3" maxlength="400"></textarea></label>
+<button class="btn" id="ask">Tanya</button>
+<p id="aout" aria-live="polite" style="white-space:pre-wrap"></p>
+</div>
+</section>
+
+<footer class="mut"><p>Supervisi dr. Puguh Widagdo, SpPD-FINASIM.</p>Semua angka adalah estimasi (rumus Mifflin-St Jeor, kategori BMI Asia-Pasifik) dan bukan pengganti konsultasi tenaga kesehatan. Data tersimpan hanya di perangkatmu.</footer>
+</main>
+
+<script>
+const $=s=>document.querySelector(s);
+const N=v=>parseFloat(String(v).trim().replace(",","."))||0;
+function load(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function seedWeight(w){if(!(w>0))return;const s=load("hs_weights",[]),t=new Date(),d=t.getFullYear()+"-"+String(t.getMonth()+1).padStart(2,"0")+"-"+String(t.getDate()).padStart(2,"0"),e=s.filter(x=>x.d!==d);e.push({d,w});save("hs_weights",e);try{WH=e}catch(x){}}
+const FOODS=[
+["Nasi putih","150 g",195],["Nasi merah","150 g",165],["Oat matang","1 mangkuk",150],
+["Telur rebus","1 butir",75],["Telur dadar","1 butir",110],["Dada ayam rebus","100 g",165],
+["Ayam goreng","1 potong",250],["Ikan bakar atau pepes","100 g",130],["Rendang daging","1 potong",200],
+["Tempe kukus atau rebus","50 g",100],["Tempe goreng","2 potong",150],["Tahu rebus","100 g",80],["Tahu goreng","1 potong",80],
+["Sayur rebus","1 mangkuk",40],["Tumis sayur","100 g",80],["Gado-gado","1 porsi",300],
+["Soto ayam tanpa nasi","1 mangkuk",250],["Bakso","1 mangkuk",300],["Nasi goreng","1 piring",350],["Mi instan goreng","1 bungkus",380],
+["Bakwan goreng","1 buah",120],["Pisang","1 buah",90],["Apel","1 buah",80],["Pepaya","100 g",45],
+["Susu rendah lemak","200 ml",100],["Teh manis","1 gelas",100],["Kopi susu gula aren","1 gelas",200],["Air putih","1 gelas",0]
+];
+$("#food").innerHTML=FOODS.map((f,i)=>`<option value="${i}">${f[0]} (${f[1]}), ${f[2]} kkal</option>`).join("");
+
+/* tabs */
+const PR=[4,4,5,6,7,31,20,22,18,10,9,8,5,2,2,11,15,14,9,8,2,1,.5,.5,7,0,3,0];
+const tabs=["hitung","catat","pantau","riwayat","masakan","panduan","tanya"];
+function show(t){if(!tabs.includes(t))t="hitung";
+tabs.forEach(x=>{$("#"+x).hidden=x!==t});
+document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.t===t));
+try{history.replaceState(null,"","#"+t)}catch(e){}
+if(t==="catat")renderLog();if(t==="pantau"){renderWater();renderW()}if(t==="riwayat")renderR()}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>show(b.dataset.t));
+
+/* BMI + kalori */
+let P=load("hs_profile",{});
+function cat(b){return b<18.5?"Berat badan kurang":b<23?"Normal":b<25?"Berat badan berlebih (berisiko)":b<30?"Obesitas tingkat I":"Obesitas tingkat II"}
+function fmt(n){return Math.round(n).toLocaleString("id-ID")}
+function calc(skip){
+const sex=$("#sex").value,age=+$("#age").value,w=N($("#w").value),h=N($("#h").value),act=+$("#act").value,def=+$("#def").value;
+const box=$("#hasil");box.hidden=false;
+if(!(age>0&&w>0&&h>0)){box.innerHTML='<p class="warn">Isi usia, berat, dan tinggi dulu.</p>';return}
+const m=h/100,bmi=w/(m*m);
+const bmr=10*w+6.25*h-5*age+(sex==="m"?5:-161),tdee=bmr*act,target=tdee-def;
+const floor=sex==="m"?1500:1200,pos=Math.max(0,Math.min(100,(bmi-15)/20*100));
+const lo=18.5*m*m,hi=22.9*m*m,wk=def*7/7700;
+box.innerHTML=`<div class="big">${bmi.toFixed(1).replace(".",",")}</div>
+<p><b>${cat(bmi)}</b></p>
+<div class="scale" role="img" aria-label="Posisi BMI ${bmi.toFixed(1)}"><i style="left:${pos}%"></i></div>
+<p class="mut">Rentang berat normal untuk tinggimu: ${lo.toFixed(1).replace(".",",")}–${hi.toFixed(1).replace(".",",")} kg.</p>
+<div class="stats"><div><b>${fmt(bmr)}</b>BMR kkal</div><div><b>${fmt(tdee)}</b>TDEE kkal</div><div><b>${fmt(target)}</b>Target kkal</div></div>
+${def?`<p>Perkiraan penurunan sekitar ${wk.toFixed(2).replace(".",",")} kg per minggu. Pantau 2–4 minggu lalu sesuaikan.</p>`:""}
+${target<floor?`<p class="warn">Target ini di bawah ${fmt(floor)} kkal, terlalu rendah tanpa pengawasan. Kurangi defisit atau konsultasikan dengan dokter atau ahli gizi.</p>`:""}`;
+P={sex,age,w,h,act,def,target:Math.round(target)};save("hs_profile",P);if(!skip)seedWeight(w);
+}
+$("#go").onclick=()=>calc();
+if(P.age){$("#sex").value=P.sex;$("#age").value=P.age;$("#w").value=String(P.w).replace(".",",");$("#h").value=String(P.h).replace(".",",");$("#act").value=P.act;$("#def").value=P.def;calc(true)}
+
+/* catatan makan */
+let SEL="";
+const dk=()=>{let d=new Date();if(SEL){const q=SEL.split("-").map(Number);d=new Date(q[0],q[1]-1,q[2])}return"hs_log_"+d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()};
+let L=load(dk(),[]);
+const MEALS=["Sarapan","Makan siang","Makan malam","Camilan","Lainnya"];
+function mealGroups(it){return MEALS.map(m=>{const list=[];it.forEach((x,i)=>{if((x.m||"Lainnya")===m)list.push({it:x,i})});return{m,list,k:list.reduce((s,y)=>s+y.it.k,0)}}).filter(g=>g.list.length)}
+function addItem(n,k,p){const t=new Date();L.push({n,k:Math.round(k),p:Math.round((p||0)*10)/10,m:$("#mt").value,t:SEL?"":String(t.getHours()).padStart(2,"0")+":"+String(t.getMinutes()).padStart(2,"0")});save(dk(),L);renderLog()}
+function renderLog(){
+const tot=L.reduce((s,i)=>s+i.k,0),t=P.target;
+$("#prog").innerHTML=`<div class="big">${fmt(tot)}<span class="mut" style="font-size:1.1rem;font-family:'DM Sans'"> kkal${t?` dari ${fmt(t)}`:""}</span></div>`+
+(t?`<div class="bar ${tot>t?"over":""}"><span style="width:${Math.min(100,tot/t*100)}%"></span></div><p class="mut">${tot>t?`Melebihi target ${fmt(tot-t)} kkal. Tidak masalah, lanjutkan besok.`:`Sisa ${fmt(t-tot)} kkal.`}</p>`:`<p class="mut">Hitung kebutuhanmu di tab Hitung untuk melihat target.</p>`);
+const pt=L.reduce((s,i)=>s+(i.p||0),0);
+$("#prog").insertAdjacentHTML("beforeend",`<p>Protein: <b>${Math.round(pt)} g</b>${P.w?`. Acuan umum ${fmt(P.w*0.8)}–${fmt(P.w*1.2)} g/hari (0,8–1,2 g/kg).`:""}</p>`+(P.w?'<p class="mut">Acuan ini tidak berlaku untuk penyakit ginjal; atur protein bersama dokter.</p>':""));
+const ul=$("#log");ul.innerHTML="";
+if(!L.length){ul.innerHTML='<li class="mut">Belum ada makanan. Pilih makanan di atas lalu tambahkan.</li>';return}
+mealGroups(L).forEach(g=>{const h=document.createElement("li");h.className="mh";const hb=document.createElement("b"),hs=document.createElement("span");hb.textContent=g.m;hs.textContent=fmt(g.k)+" kkal";h.append(hb,hs);ul.append(h);
+g.list.forEach(({it,i})=>{const li=document.createElement("li");const s=document.createElement("span");s.textContent=`${it.n}: ${it.k} kkal${it.p?`, protein ${it.p} g`:""}`;
+const b=document.createElement("button");b.textContent="Hapus";b.setAttribute("aria-label","Hapus "+it.n);b.onclick=()=>{L.splice(i,1);save(dk(),L);renderLog()};
+li.append(s,b);ul.append(li)})})}
+$("#add").onclick=()=>{const f=FOODS[+$("#food").value],q=N($("#qty").value)||1;addItem(`${f[0]} × ${q}`,f[2]*q,PR[+$("#food").value]*q);$("#qty").value=""};
+$("#addc").onclick=()=>{const n=$("#cn").value.trim(),k=N($("#ck").value);if(!n||!(k>=0)||$("#ck").value==="")return;addItem(n,k,N($("#cp").value));$("#cn").value="";$("#ck").value="";$("#cp").value=""};
+$("#clr").onclick=()=>{L=[];save(dk(),L);renderLog()};
+
+/* masakan rumahan */
+$("#rgo").onclick=()=>{
+const k=N($("#rk").value),w=N($("#rw").value),p=N($("#rp").value),n=+$("#rn").value,o=$("#rout");o.hidden=false;
+if(!(k>0&&w>0)){o.innerHTML='<p class="warn">Isi total kalori dan berat masakan matang.</p>';return}
+const g=k/w;let html=`<p>Kalori per gram: <b>${g.toFixed(2).replace(".",",")} kkal</b></p>`,add=0;
+if(p>0){add=g*p;html+=`<p>Porsi ${fmt(p)} g: <b>${fmt(add)} kkal</b></p>`}
+if(n>0){html+=`<p>Dibagi ${n} porsi sama besar: <b>${fmt(k/n)} kkal</b> per porsi</p>`;if(!add)add=k/n}
+if(add)html+='<button class="btn alt" id="radd">Tambahkan ke catatan hari ini</button>';
+o.innerHTML=html;
+if(add)$("#radd").onclick=()=>{addItem("Masakan rumahan",add);show("catat")}};
+
+/* air minum */
+const gsz=()=>+$("#gs").value||250;
+function getW(d){const v=load("hs_wml_"+d,null);return v!==null?v:load("hs_water_"+d,0)*250}
+let WA=getW(dk().slice(7));
+function renderWater(){$("#wp").textContent="Tambah 1 gelas ("+gsz()+" ml)";const s=WH.slice().sort((a,b)=>a.d<b.d?-1:1),w=s.length?s[s.length-1].w:(P.w||0),g=$("#wg").value,a=g==="e"?25:30,b=g==="e"?30:35,lo=w*a,hi=w*b,z=gsz(),tm=w?Math.round((lo+hi)/2):2000,t=Math.max(1,Math.round(tm/z));
+$("#wprog").innerHTML=`<div class="big">${fmt(WA)}<span class="mut" style="font-size:1.1rem;font-family:'DM Sans'"> ml dari sekitar ${fmt(tm)} ml</span></div><div class="bar"><span style="width:${Math.min(100,WA/tm*100)}%"></span></div><p><b>${String(Math.round(WA/z*10)/10).replace(".",",")} gelas</b> sudah diminum. 1 gelas = <b>${z} ml</b>, target sekitar ${t} gelas.</p>`+
+(w?`<p>Berat badanmu ${f1(w)} kg × ${a}–${b} ml = <b>${fmt(lo)}–${fmt(hi)} ml per hari</b>, sekitar ${t} gelas ukuran ${z} ml.</p><p class="mut">Alasan: air dibutuhkan untuk mengganti cairan yang hilang lewat urin, keringat, dan napas. Tubuh yang lebih besar kehilangan lebih banyak, jadi kebutuhannya dihitung per kilogram berat badan. Sebagian cairan juga berasal dari makanan, dan kebutuhan naik saat cuaca panas, demam, atau banyak berolahraga.</p>`:'<p class="mut">Isi berat badan di tab Hitung untuk melihat anjuran air minum sesuai berat badanmu. Sementara targetnya sekitar 2.000 ml.</p>')+
+'<p class="mut">Angka ini acuan umum untuk dewasa sehat. Penderita gagal jantung, penyakit ginjal, atau dialisis harus mengikuti batasan cairan dari dokternya.</p>'}
+$("#wp").onclick=()=>{WA+=gsz();save("hs_wml_"+dk().slice(7),WA);renderWater()};
+$("#wm").onclick=()=>{WA=Math.max(0,WA-gsz());save("hs_wml_"+dk().slice(7),WA);renderWater()};
+
+/* riwayat berat */
+let WH=load("hs_weights",[]);
+const ymd=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+$("#bd").max=ymd(new Date());
+function mon(s){const d=new Date(s+"T00:00:00");d.setDate(d.getDate()-((d.getDay()+6)%7));return ymd(d)}
+const f1=x=>x.toFixed(1).replace(".",",");
+function renderW(){
+const m={};WH.slice().sort((a,b)=>a.d<b.d?-1:1).forEach(e=>{m[mon(e.d)]=e});
+const ws=Object.keys(m).sort(),el=$("#bh");
+if(!ws.length){el.innerHTML='<p class="mut">Belum ada data. Timbang di waktu yang sama tiap minggu agar hasilnya bisa dibandingkan.</p>';return}
+const v=ws.map(k=>m[k].w),mn=Math.min(...v)-1,mx=Math.max(...v)+1;
+const pts=v.map((x,i)=>`${v.length>1?i/(v.length-1)*280+10:150},${70-(x-mn)/(mx-mn)*60}`).join(" ");
+const rows=ws.map((k,i)=>{const x=m[k].w,df=i?x-m[ws[i-1]].w:null;return `<li><span>${new Date(m[k].d+"T00:00:00").toLocaleDateString("id-ID",{day:"numeric",month:"short",year:"numeric"})}</span><span>${f1(x)} kg${df!==null?` (${df>0?"+":"−"}${f1(Math.abs(df))})`:""}</span></li>`}).reverse().join("");
+el.innerHTML=`<svg viewBox="0 0 300 80" width="100%" role="img" aria-label="Grafik berat badan mingguan"><polyline points="${pts}" fill="none" stroke="var(--acc)" stroke-width="2.5"/>${v.length===1?`<circle cx="150" cy="40" r="4" fill="var(--acc)"/>`:""}</svg><ul class="log">${rows}</ul>`}
+$("#bs").onclick=()=>{const w=N($("#bw").value),d=$("#bd").value||ymd(new Date());if(!(w>0&&d))return;WH=WH.filter(e=>e.d!==d);WH.push({d,w});save("hs_weights",WH);$("#bw").value="";$("#bd").value="";renderW();syncProfile()};
+
+/* kalori bahan */
+const ING=[["Beras putih mentah",360],["Telur ayam",155],["Dada ayam mentah",120],["Daging sapi",200],["Ikan segar",110],["Tahu",80],["Tempe",200],["Sayuran hijau",25],["Wortel",40],["Kentang",77],["Bawang merah",40],["Bawang putih",150],["Santan kental",320],["Minyak goreng",880],["Gula pasir",390],["Tepung terigu",360],["Mi kering",350],["Susu cair",60],["Bahan lain (isi sendiri)",0]];
+$("#ig").innerHTML=ING.map((x,i)=>`<option value="${i}">${x[0]}</option>`).join("");
+const fillK=()=>{$("#ik").value=ING[+$("#ig").value][1]||""};$("#ig").onchange=fillK;fillK();
+let IL=[];
+function renderI(){const ul=$("#il");ul.innerHTML="";
+IL.forEach((x,i)=>{const li=document.createElement("li"),s=document.createElement("span"),b=document.createElement("button");
+s.textContent=`${x.n}, ${x.g} g: ${Math.round(x.k)} kkal`;b.textContent="Hapus";b.setAttribute("aria-label","Hapus "+x.n);b.onclick=()=>{IL.splice(i,1);renderI()};li.append(s,b);ul.append(li)});
+const tot=IL.reduce((s,x)=>s+x.k,0);$("#it").textContent=IL.length?`Total kalori bahan: ${fmt(tot)} kkal`:"";$("#rk").value=IL.length?Math.round(tot):""}
+$("#iadd").onclick=()=>{const g=N($("#iw").value),k=N($("#ik").value);if(!(g>0&&k>0))return;IL.push({n:ING[+$("#ig").value][0].replace(" (isi sendiri)",""),g,k:g/100*k});$("#iw").value="";renderI()};
+
+/* nama pengguna dan rekap riwayat */
+let NM=load("hs_name","");
+function setNm(){$("#hi").textContent=NM?"Data pengguna: "+NM:""}
+$("#nm").value=NM;setNm();
+$("#nm").oninput=e=>{NM=e.target.value.trim();save("hs_name",NM);setNm()};
+function allDays(){const m={};
+try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i),mt=k&&k.match(/^hs_(log|water|wml)_(\d+)-(\d+)-(\d+)$/);if(!mt)continue;
+const d=mt[2]+"-"+mt[3].padStart(2,"0")+"-"+mt[4].padStart(2,"0");m[d]=m[d]||{d};const v=load(k,null);if(mt[1]==="log")m[d].items=v||[];else if(mt[1]==="wml")m[d].wm=v||0;else m[d].wl=v||0}}catch(e){}
+WH.forEach(e=>{m[e.d]=m[e.d]||{d:e.d};m[e.d].bw=e.w});
+return Object.values(m).map(x=>{x.water=x.wm!=null?x.wm:(x.wl!=null?x.wl*250:undefined);return x}).sort((a,b)=>a.d<b.d?1:-1)}
+function renderR(){
+$("#rwho").textContent=NM?"Rekap data milik "+NM+". Ketuk satu hari untuk melihat rinciannya.":"Isi nama pengguna di tab Hitung agar rekap memiliki nama.";
+const ds=allDays(),el=$("#rlist");el.innerHTML="";
+const kd=ds.filter(x=>x.items&&x.items.length);
+const avg=kd.length?kd.reduce((s,x)=>s+x.items.reduce((a,i)=>a+i.k,0),0)/kd.length:0;
+const ws=WH.slice().sort((a,b)=>a.d<b.d?-1:1),dw=ws.length>1?ws[ws.length-1].w-ws[0].w:null;
+$("#rsum").innerHTML=`<div class="stats"><div><b>${ds.length}</b>Hari tercatat</div><div><b>${fmt(avg)}</b>Rata-rata kkal</div><div><b>${dw===null?"-":(dw>0?"+":"−")+f1(Math.abs(dw))}</b>Perubahan kg</div></div>`;
+$("#rchart").innerHTML=chartR(ds);
+if(!ds.length){el.innerHTML='<p class="mut">Belum ada riwayat. Catat makanan, air, atau berat badan agar muncul di sini.</p>';return}
+ds.forEach(x=>{const it=x.items||[],k=it.reduce((s,i)=>s+i.k,0),p=it.reduce((s,i)=>s+(i.p||0),0);
+const d=document.createElement("details"),s=document.createElement("summary");
+s.textContent=new Date(x.d+"T00:00:00").toLocaleDateString("id-ID",{weekday:"short",day:"numeric",month:"short",year:"numeric"})+": "+(it.length?fmt(k)+" kkal":"tanpa catatan makan");
+const b=[];if(it.length&&p)b.push("protein "+Math.round(p)+" g");if(x.water!=null)b.push("air "+fmt(x.water)+" ml");if(x.bw)b.push("berat "+f1(x.bw)+" kg");
+const q=document.createElement("p");q.className="mut";q.textContent=(b.join(", ")||"Tidak ada data lain.")+(P.target&&it.length&&k>P.target?" Di atas target saat ini.":"");
+const box=document.createElement("div");mealGroups(it).forEach(g=>{const h=document.createElement("p"),hb=document.createElement("b"),ul=document.createElement("ul");h.style.margin="10px 0 2px";hb.textContent=g.m+": "+fmt(g.k)+" kkal";h.append(hb);
+g.list.forEach(({it:i})=>{const li=document.createElement("li");li.textContent=(i.t?i.t+" ":"")+i.n+", "+i.k+" kkal"+(i.p?", protein "+i.p+" g":"");ul.append(li)});box.append(h,ul)});
+if(it.length){const tp=document.createElement("p"),tb=document.createElement("b");tb.textContent="Total sehari: "+fmt(k)+" kkal";tp.append(tb);box.append(tp)}
+d.append(s,q,box);el.append(d)})}
+
+try{$("#wg").value=load("hs_wgrp",P.age>=60?"e":"a")}catch(e){}
+$("#wg").onchange=()=>{save("hs_wgrp",$("#wg").value);renderWater()};
+
+{const hr=new Date().getHours();$("#mt").value=hr<10?"Sarapan":hr<15?"Makan siang":hr<18?"Camilan":"Makan malam"}
+
+let rt=0;const RL="Mulai pengguna baru (hapus semua data)";
+$("#reset").onclick=()=>{const b=$("#reset");
+if(!rt){b.textContent="Ketuk sekali lagi untuk menghapus semua data";rt=setTimeout(()=>{rt=0;b.textContent=RL},5000);return}
+clearTimeout(rt);rt=0;
+try{Object.keys(localStorage).filter(k=>k.startsWith("hs_")).forEach(k=>localStorage.removeItem(k))}catch(e){}
+P={};L=[];WA=0;WH=[];IL=[];NM="";setDate("");
+["nm","age","w","h","bw"].forEach(i=>$("#"+i).value="");$("#hasil").hidden=true;$("#wg").value="a";
+setNm();renderI();renderLog();renderWater();renderW();renderR();
+b.textContent="Data terhapus. Isi nama baru di atas.";setTimeout(()=>{b.textContent=RL},4000);$("#nm").focus()};
+
+function tg(d){return new Date(d+"T00:00:00").toLocaleDateString("id-ID",{day:"numeric",month:"short"})}
+function bars(title,K,tgt,tl,note,col){
+if(!K.length)return"";
+const mx=(Math.max(tgt||0,...K.map(x=>x.v))*1.1)||1,bw=300/K.length,ty=tgt?120-tgt/mx*110:0;
+return `<h2 style="font-size:1.25rem;margin-top:16px">${title}</h2><svg viewBox="0 0 320 145" width="100%" role="img" aria-label="Grafik ${title.toLowerCase()}">`+
+K.map((x,i)=>{const bh=x.v/mx*110,cx=10+i*bw;return `<rect x="${cx+bw*.15}" y="${120-bh}" width="${bw*.7}" height="${bh}" rx="3" fill="${col}"/><text x="${cx+bw/2}" y="${116-bh}" font-size="8" text-anchor="middle" fill="var(--ink)">${Math.round(x.v)}</text><text x="${cx+bw/2}" y="135" font-size="9" text-anchor="middle" fill="var(--mut)">${x.d.slice(8)}</text>`}).join("")+
+(tgt?`<line x1="10" x2="310" y1="${ty}" y2="${ty}" stroke="var(--warm)" stroke-dasharray="4 3" stroke-width="1.5"/><text x="310" y="${ty-4}" font-size="9" text-anchor="end" fill="var(--warm)">${tl}</text>`:"")+
+`</svg><p class="mut">${note}</p>`}
+function chartR(ds){
+const K=ds.filter(x=>x.items&&x.items.length).slice(0,14).reverse().map(x=>({d:x.d,k:x.items.reduce((s,i)=>s+i.k,0)}));
+const ws=WH.slice().sort((a,b)=>a.d<b.d?-1:1).slice(-20);let h="";
+if(K.length){const mx=(Math.max(P.target||0,...K.map(x=>x.k))*1.1)||1,bw=300/K.length,ty=P.target?120-P.target/mx*110:0;
+h+=`<h2 style="font-size:1.25rem;margin-top:8px">Kalori per hari</h2><svg viewBox="0 0 320 145" width="100%" role="img" aria-label="Grafik kalori harian">`+
+K.map((x,i)=>{const bh=x.k/mx*110,cx=10+i*bw;return `<rect x="${cx+bw*.15}" y="${120-bh}" width="${bw*.7}" height="${bh}" rx="3" fill="${P.target&&x.k>P.target?"var(--bad)":"var(--acc)"}"/><text x="${cx+bw/2}" y="135" font-size="9" text-anchor="middle" fill="var(--mut)">${x.d.slice(8)}</text>`}).join("")+
+(P.target?`<line x1="10" x2="310" y1="${ty}" y2="${ty}" stroke="var(--warm)" stroke-dasharray="4 3" stroke-width="1.5"/><text x="310" y="${ty-4}" font-size="9" text-anchor="end" fill="var(--warm)">target ${fmt(P.target)} kkal</text>`:"")+
+`</svg><p class="mut">Angka di bawah batang adalah tanggal.${P.target?" Batang merah berarti di atas target saat ini.":""}</p>`}
+if(ws.length){const v=ws.map(x=>x.w),mn=Math.min(...v)-1,mx2=Math.max(...v)+1,n=ws.length,px=i=>n>1?10+i/(n-1)*300:160,py=x=>105-(x-mn)/(mx2-mn)*85,dw=v[n-1]-v[0];
+h+=`<h2 style="font-size:1.25rem;margin-top:16px">Berat badan</h2><svg viewBox="0 0 320 140" width="100%" role="img" aria-label="Grafik berat badan">`+
+(n>1?`<polyline points="${ws.map((x,i)=>px(i)+","+py(x.w)).join(" ")}" fill="none" stroke="var(--acc)" stroke-width="2.5"/>`:"")+
+ws.map((x,i)=>`<circle cx="${px(i)}" cy="${py(x.w)}" r="3.5" fill="var(--acc)"/>`).join("")+
+`<text x="${px(0)}" y="${py(v[0])-8}" font-size="10" text-anchor="${n>1?"start":"middle"}" fill="var(--ink)">${f1(v[0])} kg</text>`+
+(n>1?`<text x="310" y="${py(v[n-1])-8}" font-size="10" text-anchor="end" fill="var(--ink)">${f1(v[n-1])} kg</text><text x="10" y="135" font-size="9" fill="var(--mut)">${tg(ws[0].d)}</text><text x="310" y="135" font-size="9" text-anchor="end" fill="var(--mut)">${tg(ws[n-1].d)}</text>`:`<text x="160" y="135" font-size="9" text-anchor="middle" fill="var(--mut)">${tg(ws[0].d)}</text>`)+
+`</svg><p>${n>1?(dw<0?"Turun ":dw>0?"Naik ":"Tidak berubah, ")+(dw?f1(Math.abs(dw))+" kg ":"")+"sejak "+tg(ws[0].d)+".":"Tambah satu pencatatan lagi untuk melihat perubahan berat badan."}</p>`}
+const W=ws.length?ws[ws.length-1].w:(P.w||0),gE=$("#wg").value==="e",wt=W?Math.round(W*(gE?27.5:32.5)/50)*50:2000;
+const KW=ds.filter(x=>x.water>0).slice(0,14).reverse().map(x=>({d:x.d,v:x.water}));
+const KP=ds.map(x=>({d:x.d,v:(x.items||[]).reduce((s,i)=>s+(i.p||0),0)})).filter(x=>x.v>0).slice(0,14).reverse();
+h+=bars("Air minum per hari",KW,wt,"target "+fmt(wt)+" ml","Satuan ml. Angka di bawah batang adalah tanggal.","#4F9DCE");
+h+=bars("Protein per hari",KP,W?W*0.8:0,"acuan bawah "+Math.round(W*0.8)+" g","Satuan gram. Garis kuning adalah batas bawah acuan 0,8 g/kg, yang tidak berlaku untuk penyakit ginjal.","var(--acc)");
+return h}
+
+/* pilih tanggal catatan */
+function setDate(v){const td=ymd(new Date());if(!v||v>=td)v="";SEL=v;
+L=load(dk(),[]);WA=getW(dk().slice(7));
+const val=v||td;$("#cd").value=val;$("#pd").value=val;$("#cd").max=td;$("#pd").max=td;
+const msg=v?"Mencatat untuk "+new Date(v+"T00:00:00").toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long",year:"numeric"})+", bukan hari ini.":"Mencatat untuk hari ini. Ubah tanggal untuk mengisi hari sebelumnya.";
+$("#cdn").textContent=msg;$("#pdn").textContent=msg;renderLog();renderWater()}
+$("#cd").onchange=e=>setDate(e.target.value);$("#pd").onchange=e=>setDate(e.target.value);
+setDate("");
+
+function syncProfile(){const s=WH.slice().sort((a,b)=>a.d<b.d?-1:1);if(!s.length)return;const w=s[s.length-1].w,f=String(w).replace(".",",");
+if(!P.age){if(!$("#w").value)$("#w").value=f;return}
+if(P.w===w)return;$("#w").value=f;calc(true);renderWater()}
+
+$("#gs").value=String(load("hs_gsize",250));$("#gs").onchange=()=>{save("hs_gsize",$("#gs").value);renderWater()};
+
+/* tanya AI */
+const QA=[["1. Memilih dan memulai diet",[
+["Diet apa yang paling cepat bikin kurus?","Tidak ada diet ajaib. Keto, puasa intermiten, dan rendah karbohidrat hanya cara untuk mencapai defisit kalori. Pilih yang bisa kamu jalani konsisten. Penurunan yang terlalu cepat sering naik lagi dan ikut mengurangi otot."],
+["Berapa target penurunan berat badan yang aman dalam seminggu atau sebulan?","Umumnya 0,5–1 kg per minggu (sekitar 2–4 kg per bulan), atau 5–15% berat awal dalam setahun. Defisit 500 kkal per hari kira-kira setara 0,45 kg per minggu."],
+["Bagaimana cara menghitung kebutuhan kalori harian (TDEE dan BMR)?","BMR adalah energi saat istirahat, TDEE adalah BMR × faktor aktivitas. Rumus Mifflin-St Jeor: 10×berat + 6,25×tinggi − 5×usia, lalu +5 untuk pria atau −161 untuk wanita. Tab Hitung melakukannya otomatis. Target = TDEE − defisit."],
+["Apakah wajib memotong nasi putih sama sekali?","Tidak wajib. Yang menentukan adalah total kalori dan porsi. Batasi sekitar sepiring sedang (150 g, sekitar 195 kkal), pilih nasi merah atau campur dengan sayur, dan lengkapi dengan protein."],
+["Bagaimana cara menahan rasa lapar di beberapa hari pertama?","Cukupi protein dan serat (telur, tempe, sayur, buah), minum air putih, makan teratur, tidur cukup, dan jangan membuat defisit terlalu besar. Lapar biasanya mereda setelah 1–2 minggu."]]],
+["2. Makanan, minuman, dan nutrisi",[
+["Makanan apa saja yang pantang atau wajib dihindari?","Tidak ada makanan yang haram total. Batasi minuman manis, gorengan, dan makanan olahan tinggi gula, lemak jenuh, dan garam. Batas harian: gula sekitar 4 sendok makan, garam 1 sendok teh, lemak 5 sendok makan."],
+["Apakah buah aman dimakan saat diet atau terlalu banyak gula?","Buah utuh aman dan dianjurkan karena kaya serat dan vitamin serta membuat kenyang. Batasi jus, buah kering, dan porsi berlebihan, misalnya 2–3 porsi sehari. Penderita diabetes sebaiknya menanyakan porsinya ke dokter."],
+["Bolehkah cheat day atau cheat meal? Seberapa sering?","Boleh yang terencana, tetapi satu hari bebas penuh bisa menghapus defisit seminggu. Lebih aman satu kali makan favorit (cheat meal) sesekali, misalnya seminggu sekali dengan porsi wajar, lalu kembali ke pola biasa tanpa menghukum diri."],
+["Apakah minuman manis atau nol kalori (soda diet, pemanis buatan) aman?","Tidak menambah kalori, tetapi WHO (2023) tidak menyarankan pemanis non-gula sebagai cara mengontrol berat badan jangka panjang. Utamakan air putih, serta teh atau kopi tanpa gula."],
+["Bagaimana mencukupi kebutuhan protein harian jika modalnya terbatas?","Pilih sumber murah: telur (1 butir sekitar 6 g protein), tempe, tahu, ikan seperti kembung atau lele, dan kacang-kacangan. Tab Catat makan menampilkan total protein harianmu."],
+["Apakah harus selalu makan rebus-rebusan tanpa minyak dan garam?","Tidak. Menu yang monoton membuat cepat menyerah. Pilih rebus, kukus, panggang, atau tumis dengan sedikit minyak, dan beri rasa dengan rempah. Garam tetap dijaga sekitar 1 sendok teh per hari."]]],
+["3. Kendala dan berat badan stagnan",[
+["Kenapa berat badan berhenti turun padahal makan sudah sedikit?","Ini plateau dan wajar: kebutuhan kalori turun seiring berat turun. Periksa porsi yang meleset (minyak, minuman manis, camilan), hitung ulang kebutuhan dengan berat terbaru, tambah aktivitas, dan perbaiki tidur. Tunggu 2–4 minggu sebelum mengubah rencana."],
+["Kenapa berat badan naik setelah olahraga atau saat mau haid?","Fluktuasi 1–2 kg itu normal akibat retensi cairan, otot yang pulih, isi usus, dan hormon, bukan penambahan lemak. Lihat tren mingguan di tab Pantau dan Riwayat, bukan angka harian."],
+["Bagaimana mengatasi craving makan manis di malam hari?","Pastikan protein dan serat cukup sepanjang hari, jangan terlalu lapar, tidur cukup, siapkan camilan terukur seperti buah atau yogurt tawar, dan jauhkan stok makanan manis dari jangkauan."],
+["Kenapa saya merasa lemas, pusing, atau kurang fokus saat diet?","Penyebab umum: kalori terlalu rendah, kurang cairan, kurang tidur, atau gula darah turun. Jangan menurunkan kalori di bawah batas minimal (1.200 kkal wanita, 1.500 kkal pria), minum cukup, dan makan teratur. Bila terus berlanjut atau kamu memakai obat rutin, periksa ke dokter."],
+["Bagaimana mengatasi sembelit saat diet?","Tambah serat (sayur, buah, oat, kacang-kacangan), minum cukup, bergerak aktif, dan biasakan jadwal BAB. Periksa ke dokter jika lebih dari 3 hari, nyeri, atau ada darah."]]],
+["4. Olahraga dan aktivitas fisik",[
+["Lebih efektif mana: kardio atau latihan beban?","Keduanya berguna. Kardio membakar kalori, latihan beban menjaga otot sehingga yang turun lebih banyak lemak. Kombinasi paling baik, misalnya kardio 3 kali dan beban 2 kali per minggu."],
+["Bolehkah olahraga dalam keadaan perut kosong?","Boleh bagi sebagian orang untuk intensitas ringan sampai sedang, tetapi tidak terbukti membakar lebih banyak lemak secara total. Berhenti bila pusing atau lemas. Penderita diabetes atau pemakai obat gula darah harus berkonsultasi dulu."],
+["Berapa kali seminggu idealnya olahraga untuk menurunkan berat badan?","Targetkan 150–300 menit aktivitas aerobik sedang per minggu (misalnya 30 menit, 5 kali) ditambah latihan beban 2 kali. Mulailah bertahap sesuai kemampuan."],
+["Apakah bisa membakar lemak di bagian tubuh tertentu saja?","Tidak bisa (spot reduction). Lemak berkurang menyeluruh dengan pola yang dipengaruhi genetik. Latihan perut menguatkan otot, tetapi tidak membakar lemak perut secara khusus."]]],
+["5. Gaya hidup dan jangka panjang",[
+["Bagaimana tetap diet saat makan di luar atau acara sosial?","Lihat menu lebih dulu, pilih protein yang tidak digoreng dan sayur, ambil nasi setengah porsi, minum air putih dulu, batasi minuman manis, dan makan perlahan. Tidak perlu menghindari acara."],
+["Apakah suplemen pelangsing, teh diet, atau pembakar lemak berguna?","Buktinya terbatas, dan sebagian produk tidak resmi mengandung bahan berbahaya yang tidak tercantum. Jangan mengandalkannya. Bila tetap ingin memakai, pastikan terdaftar BPOM dan tanyakan ke dokter."],
+["Berapa jam tidur malam yang ideal agar diet tidak gagal?","Dewasa umumnya 7–9 jam. Kurang tidur meningkatkan rasa lapar dan craving serta membuat hasil diet lebih lambat."],
+["Bagaimana mempertahankan berat badan agar tidak yo-yo?","Turunkan bertahap, bangun kebiasaan yang bisa dipertahankan, timbang seminggu sekali, tetap aktif, dan di fase pemeliharaan atur defisit 0 di tab Hitung. Tangani kenaikan 2 kg sejak dini sebelum menumpuk."]]]];
+$("#qa").innerHTML=QA.map(c=>`<h3>${c[0]}</h3>`+c[1].map(x=>`<details><summary>${x[0]}</summary><p>${x[1]}</p></details>`).join("")).join("");
+let SM=null;
+try{claude.use("sample").then(s=>{SM=s;$("#askbox").hidden=!s}).catch(()=>{})}catch(e){}
+$("#ask").onclick=async()=>{const q=$("#aq").value.trim(),out=$("#aout");if(!q||!SM)return;out.textContent="Menjawab...";
+const cx=P.age?`Profil pengguna (pakai hanya bila relevan): usia ${P.age} tahun, berat ${P.w} kg, tinggi ${P.h} cm, target ${P.target} kkal per hari. `:"";
+try{const r=await SM(`Kamu asisten edukasi gizi dan diet untuk aplikasi DietKu di Indonesia, di bawah supervisi dokter spesialis penyakit dalam. Jawab dalam bahasa Indonesia, ringkas (maksimal 150 kata), praktis, tanpa format markdown. Jangan mendiagnosis atau memberi dosis obat; sarankan konsultasi dokter bila ada penyakit, kehamilan, obat rutin, atau gejala yang mengkhawatirkan. Bila pertanyaan di luar topik makanan, diet, olahraga, dan gaya hidup sehat, tolak dengan sopan. ${cx}\n\nPertanyaan: ${q}`,{onText:({text})=>{out.textContent=text},cache:false});out.textContent=r.text}
+catch(e){out.textContent=e&&e.code==="rate_limited"?"Terlalu banyak permintaan. Coba lagi sebentar lagi.":"Pertanyaan belum bisa dijawab. Coba lagi nanti."}};
+
+/* mode tampilan */
+function setTheme(t){const r=document.documentElement;if(t==="light"||t==="dark")r.setAttribute("data-theme",t);else{t="auto";r.removeAttribute("data-theme")}
+document.querySelectorAll(".seg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.th===t));save("hs_theme",t)}
+document.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>setTheme(b.dataset.th));
+setTheme(load("hs_theme","auto"));
+
+/* pasang aplikasi (PWA) */
+let DP=null;
+addEventListener("beforeinstallprompt",e=>{e.preventDefault();DP=e});
+addEventListener("appinstalled",()=>{$("#pwa").hidden=true});
+if((window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone)$("#pwa").hidden=true;
+$("#pwab").onclick=async()=>{
+if(DP){DP.prompt();try{await DP.userChoice}catch(e){}DP=null;return}
+const ua=navigator.userAgent,ios=/iPhone|iPad|iPod/.test(ua)||(ua.includes("Mac")&&navigator.maxTouchPoints>1),an=/Android/.test(ua),t=$("#pwat");
+t.textContent=ios?"iPhone atau iPad (Safari): ketuk tombol Bagikan, pilih Tambah ke Layar Utama, lalu ketuk Tambah.":an?"Android (Chrome): ketuk menu titik tiga di kanan atas, lalu pilih Instal aplikasi atau Tambahkan ke layar utama.":"Buka link ini di Safari (iPhone) atau Chrome (Android), lalu pilih Tambahkan ke Layar Utama dari menu browser.";
+t.hidden=false};
+
+/* menu makanan tambahan */
+const EX=[
+["Sarapan",["Bubur ayam|1 mangkuk|350|12","Lontong sayur|1 porsi|380|8","Nasi uduk dengan telur dan orek tempe|1 porsi|480|16","Nasi kuning komplit|1 porsi|450|12","Roti tawar|2 lembar|150|5","Roti tawar selai cokelat|2 lembar|280|5","Roti bakar cokelat keju|1 porsi|350|8","Telur ceplok|1 butir|90|6","Sereal dengan susu|1 mangkuk|200|6","Bubur kacang hijau|1 mangkuk|250|6"]],
+["Makan siang dan malam",["Nasi ayam goreng, tempe, lalapan|1 porsi|600|30","Pecel lele dengan nasi|1 porsi|650|30","Nasi pecel|1 porsi|400|12","Soto ayam dengan nasi|1 porsi|450|20","Nasi rawon|1 porsi|450|25","Nasi gudeg komplit|1 porsi|550|22","Nasi padang dengan rendang dan sayur|1 porsi|650|26","Ayam bakar|1 potong|240|22","Ayam geprek|1 potong|350|22","Sate ayam dengan bumbu kacang|10 tusuk|330|28","Ikan goreng|100 g|200|20","Opor ayam|1 potong|300|22","Telur balado|1 butir|130|7","Capcay|1 porsi|150|8","Tumis kangkung|1 porsi|70|2","Sayur asem|1 mangkuk|60|2","Sayur sop|1 mangkuk|80|4","Sayur lodeh|1 mangkuk|150|4","Sop ayam|1 mangkuk|150|12","Mi ayam|1 mangkuk|400|15","Mi goreng|1 piring|450|12","Kwetiau atau bihun goreng|1 piring|400|10","Tempe mendoan|1 potong|90|4","Perkedel kentang|1 buah|90|3","Kerupuk|3 keping|60|1"]],
+["Buah-buahan",["Jeruk|1 buah|60|1","Semangka|1 potong besar|60|1","Melon|1 potong|50|1","Mangga|1 buah sedang|100|1","Anggur|10 butir|35|0","Salak|3 buah|70|1","Jambu biji|1 buah|75|2","Nanas|1 potong|50|1","Alpukat|setengah buah|160|2","Pir|1 buah|85|1","Stroberi|5 buah|25|1","Buah naga|1 buah|120|2","Kelengkeng|10 buah|60|1","Rujak buah dengan bumbu|1 porsi|150|2"]],
+["Minuman manis",["Es teh manis|1 gelas besar|120|0","Teh botol kemasan|1 botol|140|0","Kopi sachet 3 in 1|1 gelas|100|1","Boba milk tea|1 gelas besar|400|3","Minuman bersoda|1 kaleng|140|0","Es sirup|1 gelas|100|0","Es jeruk manis|1 gelas|120|1","Jus jeruk|1 gelas|110|2","Jus alpukat dengan susu cokelat|1 gelas|300|4","Susu cokelat kemasan|1 kotak|150|5","Es teler atau es campur|1 mangkuk|350|4","Susu kental manis seduh|1 gelas|130|3"]],
+["Kue dan jajanan",["Pisang goreng|1 buah|130|1","Tahu isi|1 buah|120|4","Risoles|1 buah|150|4","Lemper|1 buah|130|3","Martabak manis|1 potong|250|5","Martabak telur|1 potong|250|8","Donat|1 buah|250|3","Roti manis isi|1 buah|250|6","Bolu|1 potong|150|3","Brownies|1 potong|250|3","Kue lapis|1 potong|100|1","Dadar gulung|1 buah|120|2","Klepon|3 buah|120|1","Onde-onde|1 buah|120|2","Biskuit|4 keping|120|2","Es krim|1 scoop|140|2","Siomay atau batagor|1 porsi|300|12"]]];
+const GR=[["Menu dasar",0,FOODS.length]];
+EX.forEach(g=>{const s=FOODS.length;g[1].forEach(x=>{const a=x.split("|");FOODS.push([a[0],a[1],+a[2]]);PR.push(+a[3])});GR.push([g[0],s,FOODS.length])});
+$("#food").innerHTML=GR.map(g=>`<optgroup label="${g[0]}">`+FOODS.slice(g[1],g[2]).map((f,j)=>`<option value="${g[1]+j}">${f[0]} (${f[1]}), ${f[2]} kkal</option>`).join("")+"</optgroup>").join("");
+
+/* bahan masakan tambahan */
+const IX=[
+["Sayuran",["Bayam|30","Kangkung|29","Sawi hijau|22","Kol atau kubis|25","Brokoli|34","Kembang kol|25","Buncis|33","Kacang panjang|44","Tomat|20","Timun|15","Terong|25","Labu siam|20","Labu kuning|28","Jagung manis pipil|90","Singkong|150","Ubi jalar|110","Jamur|25","Tauge|30","Daun singkong|70","Paprika|28","Cabai merah|40","Daun bawang|30","Bawang bombay|40"]],
+["Buah-buahan",["Pisang|95","Apel|52","Jeruk|47","Mangga|60","Nanas|50","Alpukat|160","Pepaya|45","Semangka|30","Melon|34","Jambu biji|50","Kelapa parut|350","Stroberi|32"]],
+["Ikan dan hasil laut",["Ikan kembung|110","Ikan lele|105","Ikan nila|100","Ikan gurame|120","Ikan bandeng|130","Ikan tongkol|120","Ikan tuna|110","Ikan salmon|200","Ikan kakap|100","Ikan mas|100","Ikan teri kering|170","Ikan asin|190","Udang|90","Cumi-cumi|85","Kerang|80"]],
+["Daging, kacang, dan bahan lain",["Paha ayam dengan kulit|220","Daging kambing|150","Hati ayam|120","Telur puyuh|160","Kacang tanah|570","Kacang hijau kering|330","Kacang merah kering|330","Beras merah mentah|350","Beras ketan putih|360","Oat mentah|380","Bihun kering|360","Tepung beras|360","Tepung tapioka|350","Roti tawar|260","Mentega atau margarin|720","Keju cheddar|400","Mayones|680","Kecap manis|200","Gula merah atau gula aren|370","Susu kental manis|330","Susu bubuk|500","Yoghurt tawar|60"]]];
+const OTH=ING.pop(),IG=[["Bahan umum",0,ING.length]];
+IX.forEach(g=>{const s=ING.length;g[1].forEach(x=>{const a=x.split("|");ING.push([a[0],+a[1]])});IG.push([g[0],s,ING.length])});
+ING.push(OTH);
+$("#ig").innerHTML=IG.map(g=>`<optgroup label="${g[0]}">`+ING.slice(g[1],g[2]).map((x,j)=>`<option value="${g[1]+j}">${x[0]}</option>`).join("")+"</optgroup>").join("")+`<option value="${ING.length-1}">${OTH[0]}</option>`;
+fillK();
+
+show(location.hash.slice(1));
+</script>
+</body>
+</html>
